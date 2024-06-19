@@ -9,7 +9,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 
-os.environ["GOOGLE_API_KEY"] = "AIzaSyDLG4C5hY9JSvZk1pkkVrxOWZlgVzbKFtk"
+os.environ["GOOGLE_API_KEY"] = "YOUR_GOOGLE_API_KEY"
 genai.configure(api_key =os.environ["GOOGLE_API_KEY"] )
 
 #Pdf Collection
@@ -46,7 +46,7 @@ def get_conversational_chain():
     Answer:
     """
 
-    model = ChatGoogleGenerativeAI(model="gemini-pro",temperature=0.3)
+    model = ChatGoogleGenerativeAI(model="gemini-pro",temperature=0.5)
     prompt = PromptTemplate(template=prompt_template, input_variables=["context","questions"])
     chain = load_qa_chain(model,chain_type="stuff",prompt=prompt)
     return chain
@@ -60,9 +60,6 @@ def user_input(user_question):
 
     chain = get_conversational_chain()
 
-    #response = chain(
-        #{"input_documents":docs,"questions":user_question}
-        #, return_only_ouputs=True)
     response = chain(
         {"input_documents":docs, "question": user_question}
         , return_only_outputs=True)
@@ -75,7 +72,7 @@ def user_input(user_question):
 #Streamlit initilaizing
 
 def main(): 
-    st.set_page_config("Multi PDF Search")
+    st.set_page_config("RAG Multi PDF Search")
     st.header("Chat with | PDF using Gemeini👌")
 
     user_questions = st.text_input("Question")
